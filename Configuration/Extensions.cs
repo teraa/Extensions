@@ -24,21 +24,34 @@ public static class Extensions
         Action<BinderOptions>? configureBinder = null)
         where TOptions : class
     {
-        if (configSectionPath is null)
-        {
-            const string suffix = "Options";
-
-            configSectionPath = typeof(TOptions).Name;
-
-            if (configSectionPath.EndsWith(suffix))
-            {
-                configSectionPath = configSectionPath[..^suffix.Length];
-            }
-        }
+        configSectionPath ??= GetSectionPathFromType(typeof(TOptions));
 
         return services
             .AddOptions<TOptions>(optionsName)
             .BindConfiguration(configSectionPath, configureBinder)
             .Services;
+    }
+
+    public static string GetSectionPathFromType(Type optionsType)
+    {
+        const string suffix = "Options";
+
+        string path = optionsType.Name;
+
+        if (path.EndsWith(suffix))
+        {
+            path = path[..^suffix.Length];
+        }
+
+        return path;
+    }
+
+    public static TOptions GetOptions<TOptions>(this IConfiguration configuration)
+    {
+        string path = GetSectionPathFromType(typeof(TOptions));
+        
+        return configuration
+            .GetRequiredSection(path)
+            .Get<TOptions>();
     }
 }
