@@ -7,26 +7,38 @@ namespace Teraa.Extensions.Configuration;
 [PublicAPI]
 public static class Extensions
 {
-    public static IConfigurationSection GetOptionsSection<TOptions>(this IConfiguration configuration)
-    {
-        const string suffix = "Options";
-
-        string name = typeof(TOptions).Name;
-
-        if (name.EndsWith(suffix))
-            name = name[..^suffix.Length];
-
-        return configuration.GetRequiredSection(name);
-    }
-
-    public static TOptions GetOptions<[MeansImplicitUse] TOptions>(this IConfiguration configuration)
-    {
-        return configuration.GetOptionsSection<TOptions>().Get<TOptions>();
-    }
-
-    public static IServiceCollection AddOptionsWithSection<[MeansImplicitUse] TOptions>(this IServiceCollection services, IConfiguration configuration)
+    /// <summary>
+    /// Registers the dependency injection container to bind <typeparamref name="TOptions"/> against
+    /// the <see cref="IConfiguration"/> obtained from the DI service provider. 
+    /// </summary>
+    /// <param name="services">The <see cref="IServiceCollection"/> to add the services to.</param>
+    /// <param name="optionsName">The name of the options instance.</param>
+    /// <param name="configSectionPath">The name of the configuration section to bind from.</param>
+    /// <param name="configureBinder">Optional. Used to configure the <see cref="BinderOptions"/>.</param>
+    /// <typeparam name="TOptions">The options type to be configured.</typeparam>
+    /// <returns></returns>
+    public static IServiceCollection AddBoundOptions<[MeansImplicitUse] TOptions>(
+        this IServiceCollection services,
+        string? optionsName = null,
+        string? configSectionPath = null,
+        Action<BinderOptions>? configureBinder = null)
         where TOptions : class
     {
-        return services.Configure<TOptions>(configuration.GetOptionsSection<TOptions>());
+        if (configSectionPath is null)
+        {
+            const string suffix = "Options";
+
+            configSectionPath = typeof(TOptions).Name;
+
+            if (configSectionPath.EndsWith(suffix))
+            {
+                configSectionPath = configSectionPath[..^suffix.Length];
+            }
+        }
+
+        return services
+            .AddOptions<TOptions>(optionsName)
+            .BindConfiguration(configSectionPath, configureBinder)
+            .Services;
     }
 }
