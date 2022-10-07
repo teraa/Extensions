@@ -16,7 +16,7 @@ public class RequestValidationBehaviour<TRequest, TResponse> : IPipelineBehavior
         _validators = validators;
     }
 
-    public Task<IActionResult> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<IActionResult> next)
+    public Task<IActionResult> Handle(TRequest request, RequestHandlerDelegate<IActionResult> next, CancellationToken cancellationToken)
     {
         if (!_validators.Any())
             return next();
