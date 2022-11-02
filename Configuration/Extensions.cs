@@ -1,6 +1,8 @@
-﻿using JetBrains.Annotations;
+﻿using FluentValidation;
+using JetBrains.Annotations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 
 namespace Teraa.Extensions.Configuration;
 
@@ -9,14 +11,14 @@ public static class Extensions
 {
     /// <summary>
     /// Registers the dependency injection container to bind <typeparamref name="TOptions"/> against
-    /// the <see cref="IConfiguration"/> obtained from the DI service provider. 
+    /// the <see cref="IConfiguration"/> obtained from the DI service provider.
     /// </summary>
     /// <param name="services">The <see cref="IServiceCollection"/> to add the services to.</param>
     /// <param name="optionsName">The name of the options instance.</param>
     /// <param name="configSectionPath">The name of the configuration section to bind from.</param>
     /// <param name="configureBinder">Optional. Used to configure the <see cref="BinderOptions"/>.</param>
     /// <typeparam name="TOptions">The options type to be configured.</typeparam>
-    /// <returns></returns>
+    /// <returns>The <see cref="IServiceCollection"/> for the options being configured.</returns>
     public static IServiceCollection AddBoundOptions<[MeansImplicitUse] TOptions>(
         this IServiceCollection services,
         string? optionsName = null,
@@ -30,6 +32,28 @@ public static class Extensions
             .AddOptions<TOptions>(optionsName)
             .BindConfiguration(configSectionPath, configureBinder)
             .Services;
+    }
+
+    /// <inheritdoc cref="AddBoundOptions{TOptions}"/>
+    public static IServiceCollection AddOptionsWithValidation<[MeansImplicitUse] TOptions>(
+        this IServiceCollection services,
+        string? optionsName = null,
+        string? configSectionPath = null,
+        Action<BinderOptions>? configureBinder = null)
+        where TOptions : class
+    {
+        configSectionPath ??= GetSectionPathFromType(typeof(TOptions));
+
+        var optionsBuilder = services
+            .AddOptions<TOptions>(optionsName)
+            .BindConfiguration(configSectionPath, configureBinder);
+
+        optionsBuilder
+            .Validate<IServiceProvider>((options, serviceProvider) =>
+                ValidateWithFluentValidation(options, serviceProvider, optionsBuilder.Name))
+            .ValidateOnStart();
+
+        return optionsBuilder.Services;
     }
 
     public static string GetSectionPathFromType(Type optionsType)
@@ -49,9 +73,33 @@ public static class Extensions
     public static TOptions GetOptions<TOptions>(this IConfiguration configuration)
     {
         string path = GetSectionPathFromType(typeof(TOptions));
-        
+
         return configuration
             .GetRequiredSection(path)
             .Get<TOptions>();
+    }
+
+    private static bool ValidateWithFluentValidation<TOptions>(
+        TOptions options,
+        IServiceProvider services,
+        string optionsName)
+    {
+        using var scope = services.CreateScope();
+        var validators = scope.ServiceProvider.GetRequiredService<IEnumerable<IValidator<TOptions>>>();
+
+        var context = new ValidationContext<TOptions>(options);
+
+        var errors = validators
+            .Select(x => x.Validate(context))
+            .Where(x => !x.IsValid)
+            .SelectMany(x => x.Errors)
+            .GroupBy(x => x.PropertyName, x => x.ErrorMessage)
+            .Select(x => $"{typeof(TOptions).Name}:{x.Key}: [{string.Join(" ", x)}]")
+            .ToList();
+
+        if (errors.Any())
+            throw new OptionsValidationException(optionsName, typeof(TOptions), errors);
+
+        return true;
     }
 }
