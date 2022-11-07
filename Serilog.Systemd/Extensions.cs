@@ -1,4 +1,4 @@
-﻿using JetBrains.Annotations;
+using JetBrains.Annotations;
 using Microsoft.Extensions.Hosting.Systemd;
 using Serilog;
 using Serilog.Debugging;

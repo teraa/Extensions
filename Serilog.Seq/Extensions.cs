@@ -1,4 +1,4 @@
-﻿using JetBrains.Annotations;
+using JetBrains.Annotations;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using Teraa.Extensions.Configuration;
