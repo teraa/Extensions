@@ -1,8 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Configuration", "Configuration\Configuration.csproj", "{458A593C-8D6F-44C3-9D0D-C4DC33976516}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Extensions.Configuration", "Configuration\Extensions.Configuration.csproj", "{458A593C-8D6F-44C3-9D0D-C4DC33976516}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNetCore", "AspNetCore\AspNetCore.csproj", "{7C1E58A4-E911-494C-919C-4725661D049A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Extensions.AspNetCore", "AspNetCore\Extensions.AspNetCore.csproj", "{7C1E58A4-E911-494C-919C-4725661D049A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
