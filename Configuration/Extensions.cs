@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using System.Diagnostics.CodeAnalysis;
+using FluentValidation;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -70,13 +71,42 @@ public static class Extensions
         return path;
     }
 
-    public static TOptions GetOptions<TOptions>(this IConfiguration configuration)
+    public static TOptions GetRequiredOptions<TOptions>(
+        this IConfiguration configuration,
+        IEnumerable<IValidator<TOptions>>? validators = null)
     {
         string path = GetSectionPathFromType(typeof(TOptions));
 
-        return configuration
+        var options = configuration
             .GetRequiredSection(path)
             .Get<TOptions>();
+
+        if (validators is { })
+        {
+            Validate(options, path, validators);
+        }
+
+        return options;
+    }
+
+    public static TOptions? GetOptions<TOptions>(
+        this IConfiguration configuration,
+        IEnumerable<IValidator<TOptions>>? validators = null)
+    {
+        string path = GetSectionPathFromType(typeof(TOptions));
+
+        var section = configuration.GetSection(path);
+        if (!section.Exists())
+            return default;
+
+        var options = section.Get<TOptions>();
+
+        if (validators is { })
+        {
+            Validate(options, path, validators);
+        }
+
+        return options;
     }
 
     private static bool ValidateWithFluentValidation<TOptions>(
@@ -86,7 +116,16 @@ public static class Extensions
     {
         using var scope = services.CreateScope();
         var validators = scope.ServiceProvider.GetRequiredService<IEnumerable<IValidator<TOptions>>>();
+        Validate(options, optionsName, validators);
 
+        return true;
+    }
+
+    private static void Validate<TOptions>(
+        TOptions options,
+        string optionsName,
+        IEnumerable<IValidator<TOptions>> validators)
+    {
         var context = new ValidationContext<TOptions>(options);
 
         var errors = validators
@@ -99,7 +138,5 @@ public static class Extensions
 
         if (errors.Any())
             throw new OptionsValidationException(optionsName, typeof(TOptions), errors);
-
-        return true;
     }
 }
