@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AssemblyName>Teraa.Extensions.Serilog.Seq</AssemblyName>
+    <RootNamespace>Teraa.Extensions.Serilog.Seq</RootNamespace>
+    <PackageId>Teraa.Extensions.Serilog.Seq</PackageId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Configuration\Extensions.Configuration.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="JetBrains.Annotations" Version="2022.1.0" />
+    <PackageReference Include="Serilog.Sinks.Seq" Version="5.2.1" />
+  </ItemGroup>
+
+</Project>

@@ -1,8 +1,7 @@
 using Serilog.Core;
 using Serilog.Events;
 
-namespace Teraa.Extensions.Serilog;
-
+namespace Teraa.Extensions.Serilog.Systemd;
 
 public class SyslogSeverityEnricher : ILogEventEnricher
 {
