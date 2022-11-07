@@ -8,7 +8,7 @@ namespace Teraa.Extensions.Serilog.Systemd;
 [PublicAPI]
 public static class Extensions
 {
-    public static void ConfigureSystemdConsole(this LoggerConfiguration options)
+    public static LoggerConfiguration ConfigureSystemdConsole(this LoggerConfiguration options)
     {
         options.Enrich.FromLogContext();
         
@@ -28,5 +28,7 @@ public static class Extensions
             options.WriteTo.Console(
                 outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {SourceContext}: {Message:lj}{NewLine}{Exception}");
         }
+
+        return options;
     }
 }
