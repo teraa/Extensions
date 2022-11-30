@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using FluentValidation;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Configuration;
@@ -79,6 +80,8 @@ public static class Extensions
         var options = configuration
             .GetRequiredSection(path)
             .Get<TOptions>();
+        
+        Debug.Assert(options is { });
 
         if (validators is { })
         {
@@ -99,6 +102,8 @@ public static class Extensions
             return default;
 
         var options = section.Get<TOptions>();
+        
+        Debug.Assert(options is { });
 
         if (validators is { })
         {
