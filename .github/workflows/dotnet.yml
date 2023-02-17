@@ -46,7 +46,7 @@ jobs:
           options=(
             --configuration Release
             --no-build
-            --output nupkgs
+            -p:PackageOutputPath="../nupkgs"
             -p:IncludeSymbols=true
             -p:SymbolPackageFormat=snupkg
           )
@@ -54,13 +54,13 @@ jobs:
           if [[ ${{ github.event_name }} != release ]]; then
             options+=(--version-suffix alpha.$GITHUB_RUN_NUMBER)
           fi
-          
+
           dotnet pack ${options[@]}
-          
+
       - name: Push (GitHub)
         if: steps.pack.outcome == 'success'
         run: dotnet nuget push "nupkgs/*.nupkg" --source https://nuget.pkg.github.com/teraa/index.json --api-key ${{ secrets.GITHUB_TOKEN }} --skip-duplicate
-        
+
       - name: Push (NuGet.org)
         if: >
           (steps.pack.outcome == 'success') &&
