@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AssemblyName>Teraa.Extensions.Configuration.Vault</AssemblyName>
+    <RootNamespace>Teraa.Extensions.Configuration.Vault</RootNamespace>
+    <PackageId>Teraa.Extensions.Configuration.Vault</PackageId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="JsonDocumentPath" Version="1.0.3" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.0" />
+  </ItemGroup>
+
+
+</Project>

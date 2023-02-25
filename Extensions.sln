@@ -8,6 +8,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Extensions.Serilog.Seq", "S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Extensions.Serilog.Systemd", "Serilog.Systemd\Extensions.Serilog.Systemd.csproj", "{3F574F98-AEC5-452F-9CE7-E7B6804EDC43}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Extensions.Configuration.Vault", "Configuration.Vault\Extensions.Configuration.Vault.csproj", "{FD015C3F-C5C5-4D9E-849B-4DD58312F224}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,9 @@ Global
 		{3F574F98-AEC5-452F-9CE7-E7B6804EDC43}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3F574F98-AEC5-452F-9CE7-E7B6804EDC43}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3F574F98-AEC5-452F-9CE7-E7B6804EDC43}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD015C3F-C5C5-4D9E-849B-4DD58312F224}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD015C3F-C5C5-4D9E-849B-4DD58312F224}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD015C3F-C5C5-4D9E-849B-4DD58312F224}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD015C3F-C5C5-4D9E-849B-4DD58312F224}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
