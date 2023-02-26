@@ -80,7 +80,7 @@ public static class Extensions
         var options = configuration
             .GetRequiredSection(path)
             .Get<TOptions>();
-        
+
         Debug.Assert(options is { });
 
         if (validators is { })
@@ -102,8 +102,27 @@ public static class Extensions
             return default;
 
         var options = section.Get<TOptions>();
-        
+
         Debug.Assert(options is { });
+
+        if (validators is { })
+        {
+            Validate(options, path, validators);
+        }
+
+        return options;
+    }
+
+    public static TOptions GetOptionsOrDefault<TOptions>(
+        this IConfiguration configuration,
+        IEnumerable<IValidator<TOptions>>? validators = null)
+        where TOptions : new()
+    {
+        string path = GetSectionPathFromType(typeof(TOptions));
+
+        var section = configuration.GetSection(path);
+        var options = new TOptions();
+        section.Bind(options);
 
         if (validators is { })
         {
