@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AssemblyName>Teraa.Extensions.Configuration.Vault.Options</AssemblyName>
+    <RootNamespace>Teraa.Extensions.Configuration.Vault.Options</RootNamespace>
+    <PackageId>Teraa.Extensions.Configuration.Vault.Options</PackageId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Configuration.Vault\Extensions.Configuration.Vault.csproj" />
+    <ProjectReference Include="..\Configuration\Extensions.Configuration.csproj" />
+  </ItemGroup>
+
+</Project>
