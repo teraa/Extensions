@@ -13,6 +13,7 @@ public class VaultOptions
     public string Token { get; init; }
     public string Mount { get; init; }
     public string Path { get; init; }
+    public TimeSpan Interval { get; init; }
 
     public class Validator : AbstractValidator<VaultOptions>
     {
@@ -24,6 +25,7 @@ public class VaultOptions
                 RuleFor(x => x.Token).NotEmpty();
                 RuleFor(x => x.Mount).NotEmpty();
                 RuleFor(x => x.Path).NotEmpty();
+                RuleFor(x => x.Interval >= TimeSpan.Zero);
             });
         }
     }

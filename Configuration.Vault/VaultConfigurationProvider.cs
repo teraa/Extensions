@@ -23,7 +23,7 @@ public class VaultConfigurationProvider : ConfigurationProvider
         LoadAsync(default).GetAwaiter().GetResult();
     }
 
-    private async Task LoadAsync(CancellationToken cancellationToken)
+    public async Task LoadAsync(CancellationToken cancellationToken)
     {
         using var request = new HttpRequestMessage(HttpMethod.Get, $"v1/{_source.Mount}/data/{_source.Path}")
         {
@@ -31,8 +31,7 @@ public class VaultConfigurationProvider : ConfigurationProvider
         };
 
         using var response = await _client.SendAsync(request, cancellationToken);
-        if (!response.IsSuccessStatusCode)
-            return;
+        response.EnsureSuccessStatusCode();
 
         using var json = await response.Content.ReadFromJsonAsync<JsonDocument>(cancellationToken: cancellationToken);
 
