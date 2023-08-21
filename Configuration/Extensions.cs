@@ -36,7 +36,7 @@ public static class Extensions
     }
 
     /// <inheritdoc cref="AddBoundOptions{TOptions}"/>
-    public static IServiceCollection AddOptionsWithValidation<[MeansImplicitUse] TOptions>(
+    public static IServiceCollection AddValidatedOptions<[MeansImplicitUse] TOptions>(
         this IServiceCollection services,
         string? optionsName = null,
         string? configSectionPath = null,
@@ -47,11 +47,8 @@ public static class Extensions
 
         var optionsBuilder = services
             .AddOptions<TOptions>(optionsName)
-            .BindConfiguration(configSectionPath, configureBinder);
-
-        optionsBuilder
-            .Validate<IServiceProvider>((options, serviceProvider) =>
-                ValidateWithFluentValidation(options, serviceProvider, optionsBuilder.Name))
+            .BindConfiguration(configSectionPath, configureBinder)
+            .ValidateFluentValidation()
             .ValidateOnStart();
 
         return optionsBuilder.Services;
@@ -130,18 +127,6 @@ public static class Extensions
         }
 
         return options;
-    }
-
-    private static bool ValidateWithFluentValidation<TOptions>(
-        TOptions options,
-        IServiceProvider services,
-        string optionsName)
-    {
-        using var scope = services.CreateScope();
-        var validators = scope.ServiceProvider.GetRequiredService<IEnumerable<IValidator<TOptions>>>();
-        Validate(options, optionsName, validators);
-
-        return true;
     }
 
     private static void Validate<TOptions>(
