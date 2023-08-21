@@ -1,4 +1,5 @@
 using Microsoft.Extensions.Configuration;
+// ReSharper disable UnusedMember.Global
 
 namespace Teraa.Extensions.Configuration.Vault;
 

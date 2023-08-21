@@ -1,5 +1,3 @@
-using FluentValidation;
-
 namespace Teraa.Extensions.Configuration;
 
 internal static class Utils
