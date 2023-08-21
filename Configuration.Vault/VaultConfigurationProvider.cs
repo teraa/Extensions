@@ -25,10 +25,8 @@ public class VaultConfigurationProvider : ConfigurationProvider
 
     private async Task LoadAsync(CancellationToken cancellationToken)
     {
-        using var request = new HttpRequestMessage(HttpMethod.Get, $"v1/{_source.Mount}/data/{_source.Path}")
-        {
-            Headers = {{"X-Vault-Token", _source.Token}}
-        };
+        using var request = new HttpRequestMessage(HttpMethod.Get, $"v1/{_source.Mount}/data/{_source.Path}");
+        request.Headers.Add("X-Vault-Token", _source.Token);
 
         using var response = await _client.SendAsync(request, cancellationToken);
         if (!response.IsSuccessStatusCode)
