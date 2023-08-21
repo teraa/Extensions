@@ -10,7 +10,7 @@ public static class Extensions
 {
     public static LoggerConfiguration ConfigureSeq(this LoggerConfiguration options, HostBuilderContext hostContext)
     {
-        var seqOptions = hostContext.Configuration.GetOptions(new[] {new SeqOptions.Validator()});
+        var seqOptions = hostContext.Configuration.GetValidatedOptions(new[] {new SeqOptions.Validator()});
         if (seqOptions is { })
         {
             options.WriteTo.Seq(seqOptions.ServerUrl.ToString(), apiKey: seqOptions.ApiKey);

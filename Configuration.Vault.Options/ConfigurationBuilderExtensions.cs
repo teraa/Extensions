@@ -7,7 +7,7 @@ public static class ConfigurationBuilderExtensions
     public static IConfigurationBuilder AddVault(this IConfigurationBuilder builder)
     {
         var config = builder.Build();
-        var options = config.GetOptionsOrDefault(new[] {new VaultOptions.Validator()});
+        var options = config.GetValidatedOptionsOrDefault(new[] {new VaultOptions.Validator()});
         if (!options.IsEnabled)
             return builder;
 
