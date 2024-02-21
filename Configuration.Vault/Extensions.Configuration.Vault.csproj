@@ -11,7 +11,7 @@
 
   <ItemGroup>
     <PackageReference Include="JsonDocumentPath" Version="1.0.3" />
-    <PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0" />
   </ItemGroup>
 
 
