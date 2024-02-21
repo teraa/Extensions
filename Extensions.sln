@@ -1,5 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
+# 
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Extensions.Configuration", "Configuration\Extensions.Configuration.csproj", "{458A593C-8D6F-44C3-9D0D-C4DC33976516}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Extensions.AspNetCore", "AspNetCore\Extensions.AspNetCore.csproj", "{7C1E58A4-E911-494C-919C-4725661D049A}"
@@ -11,6 +12,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Extensions.Configuration.Vault", "Configuration.Vault\Extensions.Configuration.Vault.csproj", "{FD015C3F-C5C5-4D9E-849B-4DD58312F224}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Extensions.Configuration.Vault.Options", "Configuration.Vault.Options\Extensions.Configuration.Vault.Options.csproj", "{4755EE4E-4C4B-406F-BF2E-F1F89FAD5AD7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Extensions.Identity", "Identity\Extensions.Identity.csproj", "{A65E0D1F-FF80-4B35-A648-626ECDF7CF09}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -42,5 +45,9 @@ Global
 		{4755EE4E-4C4B-406F-BF2E-F1F89FAD5AD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4755EE4E-4C4B-406F-BF2E-F1F89FAD5AD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4755EE4E-4C4B-406F-BF2E-F1F89FAD5AD7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A65E0D1F-FF80-4B35-A648-626ECDF7CF09}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A65E0D1F-FF80-4B35-A648-626ECDF7CF09}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A65E0D1F-FF80-4B35-A648-626ECDF7CF09}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A65E0D1F-FF80-4B35-A648-626ECDF7CF09}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
