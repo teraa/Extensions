@@ -9,28 +9,30 @@ public static class ConfigurationExtensions
 {
     public static TOptions GetValidatedRequiredOptions<TOptions>(
         this IConfiguration configuration,
-        IEnumerable<IValidator<TOptions>>? validators = null) where TOptions : class
+        IEnumerable<IValidator<TOptions>>? validators = null,
+        string? configSectionPath = null) where TOptions : class
     {
-        var path = Utils.GetSectionPathFromType(typeof(TOptions));
+        configSectionPath ??= Utils.GetSectionPathFromType(typeof(TOptions));
 
         var options = configuration
-            .GetRequiredSection(path)
+            .GetRequiredSection(configSectionPath)
             .Get<TOptions>();
 
         Debug.Assert(options is not null);
 
-        Validate(options, path, validators);
+        Validate(options, configSectionPath, validators);
 
         return options;
     }
 
     public static TOptions? GetValidatedOptions<TOptions>(
         this IConfiguration configuration,
-        IEnumerable<IValidator<TOptions>>? validators = null) where TOptions : class
+        IEnumerable<IValidator<TOptions>>? validators = null,
+        string? configSectionPath = null) where TOptions : class
     {
-        var path = Utils.GetSectionPathFromType(typeof(TOptions));
+        configSectionPath ??= Utils.GetSectionPathFromType(typeof(TOptions));
 
-        var section = configuration.GetSection(path);
+        var section = configuration.GetSection(configSectionPath);
         if (!section.Exists())
             return default;
 
@@ -38,38 +40,39 @@ public static class ConfigurationExtensions
 
         Debug.Assert(options is not null);
 
-        Validate(options, path, validators);
+        Validate(options, configSectionPath, validators);
 
         return options;
     }
 
     public static TOptions GetValidatedOptionsOrDefault<TOptions>(
         this IConfiguration configuration,
-        IEnumerable<IValidator<TOptions>>? validators = null)
+        IEnumerable<IValidator<TOptions>>? validators = null,
+        string? configSectionPath = null)
         where TOptions : class, new()
     {
-        var path = Utils.GetSectionPathFromType(typeof(TOptions));
-        var section = configuration.GetSection(path);
+        configSectionPath ??= Utils.GetSectionPathFromType(typeof(TOptions));
+        var section = configuration.GetSection(configSectionPath);
         var options = new TOptions();
         section.Bind(options);
 
-        Validate(options, path, validators);
+        Validate(options, configSectionPath, validators);
 
         return options;
     }
 
     private static void Validate<TOptions>(
         TOptions options,
-        string optionsName,
+        string configSectionPath,
         IEnumerable<IValidator<TOptions>>? validators) where TOptions : class
     {
         if (validators is null)
             return;
 
-        var validateOptions = new FluentValidationValidateOptions<TOptions>(optionsName, validators);
-        var result = validateOptions.Validate(optionsName, options);
+        var validateOptions = new FluentValidationValidateOptions<TOptions>(configSectionPath, validators);
+        var result = validateOptions.Validate(configSectionPath, options);
 
         if (result.Failed)
-            throw new OptionsValidationException(optionsName, typeof(TOptions), result.Failures);
+            throw new OptionsValidationException(configSectionPath, typeof(TOptions), result.Failures);
     }
 }
