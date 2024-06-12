@@ -9,8 +9,10 @@ namespace Teraa.Extensions.AspNetCore;
 // [assembly: Behaviors(typeof(RequestValidationBehavior<,>))]
 
 [PublicAPI]
-public sealed class RequestValidationBehavior<TRequest, TResponse>(IEnumerable<IValidator<TRequest>> validators)
-    : Behavior<TRequest, IActionResult>
+public sealed class RequestValidationBehavior<TRequest, TResponse>(
+    IEnumerable<IValidator<TRequest>> validators
+) : Behavior<TRequest, IActionResult>
+    where TResponse : IActionResult
 {
     public override async ValueTask<IActionResult> HandleAsync(TRequest request, CancellationToken cancellationToken)
     {
