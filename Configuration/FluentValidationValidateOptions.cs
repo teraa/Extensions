@@ -6,9 +6,10 @@ namespace Teraa.Extensions.Configuration;
 
 // Equivalent to DataAnnotationValidateOptions
 public class FluentValidationValidateOptions<
-        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties |
-                                    DynamicallyAccessedMemberTypes.NonPublicProperties)]
-        TOptions>
+    [DynamicallyAccessedMembers(memberTypes:
+        DynamicallyAccessedMemberTypes.PublicProperties |
+        DynamicallyAccessedMemberTypes.NonPublicProperties)]
+    TOptions>
     : IValidateOptions<TOptions> where TOptions : class
 {
     private readonly IEnumerable<IValidator<TOptions>> _validators;
