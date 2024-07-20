@@ -45,7 +45,7 @@ public static class ServiceCollectionExtensions
         var optionsBuilder = services
             .AddOptions<TOptions>(optionsName)
             .BindConfiguration(configSectionPath, configureBinder)
-            .ValidateFluentValidation()
+            .ValidateFluentValidation(configSectionPath)
             .ValidateOnStart();
 
         return optionsBuilder.Services;

@@ -71,7 +71,7 @@ public static class ConfigurationExtensions
         if (validators is null)
             return;
 
-        var validateOptions = new FluentValidationValidateOptions<TOptions>(configSectionPath, validators);
+        var validateOptions = new FluentValidationValidateOptions<TOptions>(null, configSectionPath, validators);
         var result = validateOptions.Validate(configSectionPath, options);
 
         if (result.Failed)

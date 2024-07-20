@@ -15,6 +15,7 @@ public static class OptionsBuilderFluentValidationExtensions
     /// </summary>
     /// <typeparam name="TOptions">The options type to be configured.</typeparam>
     /// <param name="optionsBuilder">The options builder to add the services to.</param>
+    /// <param name="configSectionPath">The config section path which is bound to the options instance being validated.</param>
     /// <returns>The <see cref="OptionsBuilder{TOptions}"/> so that additional calls can be chained.</returns>
     public static OptionsBuilder<TOptions> ValidateFluentValidation<
         [DynamicallyAccessedMembers(memberTypes:
@@ -22,14 +23,15 @@ public static class OptionsBuilderFluentValidationExtensions
             DynamicallyAccessedMemberTypes.NonPublicProperties)
         ]
         TOptions>(
-        this OptionsBuilder<TOptions> optionsBuilder
+        this OptionsBuilder<TOptions> optionsBuilder,
+        string configSectionPath
     ) where TOptions : class
     {
         optionsBuilder.Services.AddSingleton<IValidateOptions<TOptions>>(sp =>
         {
             using var scope = sp.CreateScope();
             var validators = scope.ServiceProvider.GetRequiredService<IEnumerable<IValidator<TOptions>>>();
-            return new FluentValidationValidateOptions<TOptions>(optionsBuilder.Name, validators);
+            return new FluentValidationValidateOptions<TOptions>(optionsBuilder.Name, configSectionPath, validators);
         });
 
         return optionsBuilder;
