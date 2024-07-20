@@ -1,10 +1,12 @@
 using System.Diagnostics;
 using FluentValidation;
+using JetBrains.Annotations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 
 namespace Teraa.Extensions.Configuration;
 
+[PublicAPI]
 public static class ConfigurationExtensions
 {
     public static TOptions GetValidatedRequiredOptions<TOptions>(
