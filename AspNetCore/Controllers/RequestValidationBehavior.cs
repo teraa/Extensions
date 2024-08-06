@@ -3,7 +3,7 @@ using Immediate.Handlers.Shared;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Teraa.Extensions.AspNetCore;
+namespace Teraa.Extensions.AspNetCore.Controllers;
 
 // Enable with
 // [assembly: Behaviors(typeof(RequestValidationBehavior<,>))]

@@ -1,13 +1,14 @@
-using FluentValidation;
+﻿using FluentValidation;
 using JetBrains.Annotations;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Teraa.Extensions.AspNetCore;
+namespace Teraa.Extensions.AspNetCore.MinimalApis;
 
 [PublicAPI]
-public class RequestValidationBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, IActionResult>
-    where TRequest : IRequest<TResponse>, IRequest<IActionResult>
+public class RequestValidationBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, IResult>
+    where TRequest : IRequest<TResponse>, IRequest<IResult>
 {
     private readonly IEnumerable<IValidator<TRequest>> _validators;
 
@@ -16,7 +17,7 @@ public class RequestValidationBehaviour<TRequest, TResponse> : IPipelineBehavior
         _validators = validators;
     }
 
-    public Task<IActionResult> Handle(TRequest request, RequestHandlerDelegate<IActionResult> next, CancellationToken cancellationToken)
+    public Task<IResult> Handle(TRequest request, RequestHandlerDelegate<IResult> next, CancellationToken cancellationToken)
     {
         if (!_validators.Any())
             return next();
@@ -34,8 +35,7 @@ public class RequestValidationBehaviour<TRequest, TResponse> : IPipelineBehavior
             return next();
 
         var problemDetails = new ValidationProblemDetails(errors);
-        var result = new BadRequestObjectResult(problemDetails);
 
-        return Task.FromResult<IActionResult>(result);
+        return Task.FromResult(Microsoft.AspNetCore.Http.Results.BadRequest(problemDetails));
     }
 }

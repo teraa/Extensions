@@ -9,7 +9,9 @@ namespace Teraa.Extensions.AspNetCore;
 public static class Extensions
 {
     public static IServiceCollection AddRequestValidationBehaviour(this IServiceCollection services)
-        => services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehaviour<,>));
+        => services
+            .AddTransient(typeof(IPipelineBehavior<,>), typeof(Controllers.RequestValidationBehaviour<,>))
+            .AddTransient(typeof(IPipelineBehavior<,>), typeof(MinimalApis.RequestValidationBehaviour<,>));
 
     public static IHttpClientBuilder AddKeyedHttpMessageHandler<THandler>(this IHttpClientBuilder builder, object key)
         where THandler : DelegatingHandler
